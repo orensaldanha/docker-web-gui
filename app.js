@@ -1,13 +1,18 @@
 const express = require('express')
 const app = express()
-const port = process.env.port | 3000
+require('dotenv').config();
+const port = process.env.PORT | 3000
+
+const Docker = require('dockerode')
+const docker = new Docker()
+
+app.get('/container', (req, res) => {
+  docker.listContainers({all: true})
+        .then(containers =>  res.json({"containers": containers}))
+})
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
-
-app.get('/json', (req, res) => {
-  res.json(req.query);
 })
 
 app.listen(port, () => {
