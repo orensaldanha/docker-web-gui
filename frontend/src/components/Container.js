@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import moment from "moment"
 
 const Container = () => {
     const { containerName } = useParams()
+    const navigate = useNavigate();
     const [container, setContainer] = useState()
-
+    const [running, setRunning] = useState()
     
     useEffect(() => {
         const getContainer = async () => {
@@ -14,8 +15,32 @@ const Container = () => {
             setContainer(res.data)
         }
         getContainer()
-    }, [containerName])
-    
+    }, [containerName, running])
+
+    const removeContainer = async (container_id) => {
+        //todo - only remove stopped containers
+        if(!container.Status.Running) {
+            const res = await axios.delete(`/containers/${container_id}`)
+            if(res.status === 204) {
+                navigate('/containers')
+            }
+        }
+    }
+
+    const startContainer = async (container_id) => {
+        const res = await axios.post(`/containers/${container_id}/start`)
+        if(res.status === 204) {
+            setRunning(true)
+        }
+    }    
+
+    const stopContainer = async (container_id) => {
+        const res = await axios.post(`/containers/${container_id}/stop`)
+        if(res.status === 204) {
+            setRunning(false)
+        }
+    }    
+
     return (
         <div>
             <h1>Container Details</h1>
@@ -26,12 +51,12 @@ const Container = () => {
                 <div>
                     <div>
                         <h2>Actions</h2>
-                        <button>Start</button>
-                        <button>Stop</button>
-                        <button>Remove</button>
+                        <button onClick={() => startContainer(container.Id)} disabled={container.State.Running}>Start</button>
+                        <button onClick={() => stopContainer(container.Id)} disabled={!container.State.Running}>Stop</button>
+                        <button onClick={() => removeContainer(container.Id)}>Remove</button>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div className="col-sm-6">
 
                         <table className="table table-bordered">
                             <thead className="table-dark">
@@ -64,7 +89,7 @@ const Container = () => {
                         </table>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div className="col-sm-6">
                         <table className="table table-bordered">
                             <thead className="table-dark">
                                 <tr>
@@ -84,7 +109,7 @@ const Container = () => {
                                     <td>ENTRYPOINT</td>
                                     <td colSpan={2}>{container.Config.Entrypoint ? container.Config.Entrypoint[0] : "-"}</td>
                                 </tr>
-                                {container.Config.Env.length > 1 &&
+                                {container.Config.Env.length > 0 &&
                                     <>
                                         <tr>
                                             <td rowSpan={container.Config.Env.length + 1}>ENV</td>
@@ -92,7 +117,7 @@ const Container = () => {
                                         {container.Config.Env.map(env => {
                                             const [k, v] = env.split("=")
                                             return (
-                                                <tr>
+                                                <tr key={k}>
                                                     <td>{k}</td>
                                                     <td>{v}</td>
                                                 </tr>
@@ -104,7 +129,7 @@ const Container = () => {
                         </table>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div className="col-sm-6">
                          <table className="table table-bordered">
                             <thead >
                                 <tr className="table-dark">
@@ -141,7 +166,7 @@ const Container = () => {
                     </div>  
 
                     {container.Mounts.length !== 0 && 
-                        <div class="col-sm-6">
+                        <div className="col-sm-6">
                             <table className="table table-bordered">
                             <thead >
                                 <tr className="table-dark">
@@ -156,14 +181,14 @@ const Container = () => {
                                 {container.Mounts.map(mount => {
                                     if(mount.Type === "volume") {
                                         return (
-                                            <tr>
+                                            <tr key={mount.Name}>
                                                 <td>{mount.Name}</td>
                                                 <td>{mount.Destination}</td>
                                             </tr>
                                         )
                                     } else {
                                         return (
-                                            <tr>
+                                            <tr key={mount.Source}>
                                                 <td>{mount.Source}</td>
                                                 <td>{mount.Destination}</td>
                                             </tr>

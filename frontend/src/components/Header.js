@@ -5,6 +5,7 @@ const Header = () => {
       <div style={{backgroundColor: "black", height: "30px"}}>
         <Link to="/">Dashboard</Link>
         <Link to="/containers">Containers</Link>
+        <Link to="/images">Images</Link>
       </div>
     );
   }

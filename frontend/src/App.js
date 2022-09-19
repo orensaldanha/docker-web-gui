@@ -2,6 +2,8 @@ import './App.css';
 
 import Containers from './components/Containers';
 import Container from './components/Container';
+import Images from './components/Images';
+import Image from './components/Image';
 import Root from './components/Root';
 
 import {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: "/containers/:containerName",
         element: <Container />
+      }, 
+      {
+        path: "/images",
+        element: <Images />,
+      }, 
+      {
+        path: "/images/:imageId",
+        element: <Image />,
       }
     ],
   },
