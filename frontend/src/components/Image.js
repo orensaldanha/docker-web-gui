@@ -3,15 +3,15 @@ import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import moment from "moment"
 
-const Container = () => {
+const Image = () => {
     const { imageId } = useParams()
     const navigate = useNavigate();
-    const [image, setImge] = useState()
+    const [image, setImage] = useState()
     
     useEffect(() => {
         const getImage = async () => {
             const res = await axios.get(`/images/${imageId}`)
-            setImge(res.data)
+            setImage(res.data)
         }
         getImage()
     }, [imageId])
@@ -126,4 +126,4 @@ const Container = () => {
     )
 }
 
-export default Container
+export default Image

@@ -85,6 +85,33 @@ app.delete('/images/:imageId', (req, res) => {
     })
 })
 
+//Volumes
+app.get('/volumes', (req, res) => {
+  docker.listVolumes()
+        .then(volumes =>  res.json({"volumes": volumes}))
+})
+
+app.get('/volumes/:volumeName', (req, res) => {
+  const volumeName = req.params.volumeName
+
+  const volume = docker.getVolume(volumeName)
+
+  volume.inspect()
+    .then(inspectInfo => {
+      res.json(inspectInfo)
+    })
+})
+
+app.delete('/volumes/:volumeName', (req, res) => {
+  const volumeName = req.params.volumeName
+
+  const volume = docker.getVolume(volumeName)
+  volume.remove()
+    .then(result => {
+      res.status(204).send()
+    })
+})
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
