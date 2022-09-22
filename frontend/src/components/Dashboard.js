@@ -32,7 +32,7 @@ const Dashboard = () => {
           <div class="col">
               <div class="card">
                 <div class="card-body">
-                  <Link to="/containers"><h5 class="card-title">Containers</h5></Link>
+                  <Link to="/containers"><h5 class="card-title"><i class="bi bi-box"></i>Containers</h5></Link>
                   <p class="card-text">{counts.containers}</p>
                 </div>
               </div>
@@ -40,7 +40,7 @@ const Dashboard = () => {
           <div class="col">
               <div class="card">
                 <div class="card-body">
-                <Link to="/images"><h5 class="card-title">Images</h5></Link>
+                <Link to="/images"><h5 class="card-title"><i class="bi bi-layers"></i>Images</h5></Link>
                   <p class="card-text">{counts.images}</p>
                 </div>
               </div>
@@ -48,7 +48,7 @@ const Dashboard = () => {
           <div class="col">
               <div class="card">
                 <div class="card-body">
-                <Link to="/volumes"><h5 class="card-title">Volumes</h5></Link>
+                <Link to="/volumes"><h5 class="card-title"><i class="bi bi-sd-card"></i>Volumes</h5></Link>
                   <p class="card-text">{counts.volumes}</p>
                 </div>
               </div>

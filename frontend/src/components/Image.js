@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import moment from "moment"
+import { toast } from "react-toastify"
 
 const Image = () => {
     const { imageId } = useParams()
@@ -29,6 +30,7 @@ const Image = () => {
         //todo -  only images with no containers can be removes or force stopped containers
         const res = await axios.delete(`/images/${image_id}`)
         if(res.status === 204) {
+            toast.success(`Image ${image_id} removed`)
             navigate('/images')
         }
         
@@ -42,9 +44,11 @@ const Image = () => {
                 <div className="spinner-border"></div> 
             :
                 <div>
-                    <div>
-                        <h2>Actions</h2>
-                        <button onClick={() => removeImage(image.Id)}>Remove</button>
+                    <div class="btn-group">
+                        <h2 id="actions">Actions: </h2>
+                        <button class="btn btn-dark" onClick={() => removeImage(image.Id)}>
+                            <i class="bi bi-trash"></i>Remove
+                        </button>
                     </div>
 
                     <div className="col-sm-6">

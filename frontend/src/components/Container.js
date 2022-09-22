@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import moment from "moment"
+import { toast } from "react-toastify"
 
 const Container = () => {
     const { containerName } = useParams()
@@ -19,9 +20,10 @@ const Container = () => {
 
     const removeContainer = async (container_id) => {
         //todo - only remove stopped containers
-        if(!container.Status.Running) {
+        if(!container.State.Running) {
             const res = await axios.delete(`/containers/${container_id}`)
             if(res.status === 204) {
+                toast.success(`Container ${container_id} removed`)
                 navigate('/containers')
             }
         }
@@ -30,6 +32,7 @@ const Container = () => {
     const startContainer = async (container_id) => {
         const res = await axios.post(`/containers/${container_id}/start`)
         if(res.status === 204) {
+            toast.success(`Container ${container_id} started`)
             setRunning(true)
         }
     }    
@@ -37,6 +40,7 @@ const Container = () => {
     const stopContainer = async (container_id) => {
         const res = await axios.post(`/containers/${container_id}/stop`)
         if(res.status === 204) {
+            toast.success(`Container ${container_id} stopped`)
             setRunning(false)
         }
     }    
@@ -49,11 +53,17 @@ const Container = () => {
                 <div className="spinner-border"></div> 
             :
                 <div>
-                    <div>
-                        <h2>Actions</h2>
-                        <button onClick={() => startContainer(container.Id)} disabled={container.State.Running}>Start</button>
-                        <button onClick={() => stopContainer(container.Id)} disabled={!container.State.Running}>Stop</button>
-                        <button onClick={() => removeContainer(container.Id)}>Remove</button>
+                    <div class="btn-group">
+                        <h2 id="actions">Actions: </h2>
+                        <button class="btn btn-dark" onClick={() => startContainer(container.Id)} disabled={container.State.Running}>
+                            <i class="bi bi-play"></i>Start
+                        </button>
+                        <button class="btn btn-dark" onClick={() => stopContainer(container.Id)} disabled={!container.State.Running}>
+                            <i class="bi bi-stop"></i> Stop
+                        </button>
+                        <button class="btn btn-dark " onClick={() => removeContainer(container.Id)}>
+                            <i class="bi bi-trash"></i>Remove
+                        </button>
                     </div>
 
                     <div className="col-sm-6">
