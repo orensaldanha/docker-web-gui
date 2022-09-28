@@ -2,5 +2,5 @@ const Docker = require('dockerode');
 
 var docker = new Docker();
 
-docker.version()
-      .then(res => console.log(res))
+docker.listContainers() 
+.then(containers =>  console.log(containers))
