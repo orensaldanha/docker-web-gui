@@ -16,6 +16,9 @@ Supports some of the basic docker interactions like:
 * Removing volumes
 
 ## Screenshots
+![Dashboard](https://user-images.githubusercontent.com/36854536/192742671-a65bd9d2-8234-442c-98ad-961e17e2b384.png)
+![Containers](https://user-images.githubusercontent.com/36854536/192742678-f7f52d69-d9e0-48f3-9ec6-9d2e120443cb.png)
+![Container](https://user-images.githubusercontent.com/36854536/192742686-e1904e80-101a-48be-95df-e2a4753453d4.png)
 
 
 ## Software Tools Used 
