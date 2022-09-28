@@ -19,13 +19,14 @@ const Container = () => {
     }, [containerName, running])
 
     const removeContainer = async (container_id) => {
-        //todo - only remove stopped containers
         if(!container.State.Running) {
             const res = await axios.delete(`/containers/${container_id}`)
             if(res.status === 204) {
                 toast.success(`Container ${container_id} removed`)
                 navigate('/containers')
             }
+        } else {
+            toast.error(`Container ${container_id} must be stopped before removing`)
         }
     }
 

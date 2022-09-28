@@ -27,13 +27,17 @@ const Image = () => {
 
 
     const removeImage = async (image_id) => {
-        //todo -  only images with no containers can be removes or force stopped containers
-        const res = await axios.delete(`/images/${image_id}`)
-        if(res.status === 204) {
+        try {
+            const res = await axios.delete(`/images/${image_id}`)
             toast.success(`Image ${image_id} removed`)
             navigate('/images')
+        } catch(error) {
+            if (error.response) {
+                if (error.response.status === 409) {
+                    toast.error(`Remove containers and child images using this image`)
+                }
+            }
         }
-        
     }
 
     return (

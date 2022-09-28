@@ -47,7 +47,7 @@ const Images = () => {
                             return (
                                 <tr key={image.Id}>
                                     <td><Link to={`/images/${image.Id}`}>{image.Id}</Link></td>
-                                    <td>{image.RepoTags[0]}</td>
+                                    <td><mark>{image.RepoTags[0]}</mark></td>
                                     <td>{bytesToSize(image.Size)}</td>
                                     <td>{created}</td>
                                 </tr>

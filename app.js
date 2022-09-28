@@ -83,6 +83,9 @@ app.delete('/images/:imageId', (req, res) => {
     .then(result => {
       res.status(204).send()
     })
+    .catch(err => {
+      res.status(409).send()
+    })
 })
 
 //Volumes
@@ -109,6 +112,9 @@ app.delete('/volumes/:volumeName', (req, res) => {
   volume.remove()
     .then(result => {
       res.status(204).send()
+    })
+    .catch(err => {
+      res.status(409).send()
     })
 })
 

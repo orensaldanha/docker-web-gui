@@ -25,7 +25,17 @@ const Volume = () => {
             toast.success(`Image ${volumeName} removed`)
             navigate('/volumes')
         }
-        
+        try {
+            const res = await axios.delete(`/volumes/${volumeName}`)
+            toast.success(`Image ${volumeName} removed`)
+            navigate('/volumes')
+        } catch(error) {
+            if (error.response) {
+                if (error.response.status === 409) {
+                    toast.error(`Volume is in use!`)
+                }
+            }
+        }
     }
 
     return (
